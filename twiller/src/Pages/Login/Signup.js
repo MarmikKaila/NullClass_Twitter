@@ -6,6 +6,8 @@ import GoogleButton from "react-google-button";
 import { useUserAuth } from "../../context/UserAuthContext";
 import "./login.css";
 
+const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const Signup = () => {
   const [username, setusername] = useState("");
   const [name, setname] = useState("");
@@ -26,7 +28,7 @@ const Signup = () => {
         name: name,
         email: email,
       };
-      fetch("http://localhost:5000/register", {
+      fetch(`${API}/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
