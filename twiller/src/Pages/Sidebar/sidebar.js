@@ -9,6 +9,9 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MoreIcon from "@mui/icons-material/More";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import MicIcon from "@mui/icons-material/Mic";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import HistoryIcon from "@mui/icons-material/History";
 import Divider from "@mui/material/Divider";
 import DoneIcon from "@mui/icons-material/Done";
 import Button from "@mui/material/Button";
@@ -21,7 +24,9 @@ import "./sidebar.css";
 import Customlink from "./Customlink";
 import Sidebaroption from "./Sidebaroption";
 import { useNavigate } from "react-router-dom";
-import useLoggedinuser from "../../hooks/useLoggedinuser"
+import useLoggedinuser from "../../hooks/useLoggedinuser";
+import LanguageSelector from "../../components/LanguageSelector/LanguageSelector";
+
 const Sidebar = ({ handlelogout, user }) => {
   const [anchorE1, setanchorE1] = useState(null);
   const openmenu = Boolean(anchorE1);
@@ -60,9 +65,23 @@ const Sidebar = ({ handlelogout, user }) => {
       <Customlink to="/home/profile">
         <Sidebaroption Icon={PermIdentityIcon} text="Profile" />
       </Customlink>
+      <Customlink to="/home/audio">
+        <Sidebaroption Icon={MicIcon} text="Audio Tweet" />
+      </Customlink>
+      <Customlink to="/home/subscription">
+        <Sidebaroption Icon={CreditCardIcon} text="Subscription" />
+      </Customlink>
+      <Customlink to="/home/login-history">
+        <Sidebaroption Icon={HistoryIcon} text="Login History" />
+      </Customlink>
       <Customlink to="/home/more">
         <Sidebaroption Icon={MoreIcon} text="More" />
       </Customlink>
+      
+      <div className="language-selector-container">
+        <LanguageSelector />
+      </div>
+      
       <Button variant="outlined" className="sidebar__tweet" fullWidth>
         Tweet
       </Button>

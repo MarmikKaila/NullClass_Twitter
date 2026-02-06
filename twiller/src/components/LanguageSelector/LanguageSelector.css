@@ -1,0 +1,209 @@
+.language-selector {
+  position: relative;
+}
+
+.language-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background-color: transparent;
+  border: 1px solid #e1e8ed;
+  border-radius: 25px;
+  cursor: pointer;
+  color: #14171a;
+  font-size: 14px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.language-btn:hover {
+  background-color: #e8f5fe;
+  border-color: #1da1f2;
+}
+
+.language-btn svg {
+  color: #1da1f2;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  min-width: 200px;
+  background: white;
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.language-option:hover {
+  background-color: #f5f8fa;
+}
+
+.language-option.active {
+  background-color: #e8f5fe;
+}
+
+.language-option .flag {
+  font-size: 20px;
+}
+
+.language-option .name {
+  flex: 1;
+  color: #14171a;
+  font-size: 14px;
+}
+
+.language-option .checkmark {
+  color: #1da1f2;
+  font-weight: bold;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  color: #14171a;
+}
+
+.modal p {
+  color: #657786;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.phone-input-section input,
+.otp-input-section input {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  text-align: center;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
+}
+
+.phone-input-section input:focus,
+.otp-input-section input:focus {
+  border-color: #1da1f2;
+  outline: none;
+}
+
+.send-otp-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.send-otp-btn:hover {
+  background-color: #1991db;
+}
+
+.send-otp-btn:disabled {
+  background-color: #aad8f8;
+  cursor: not-allowed;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.verify-btn {
+  flex: 1;
+  padding: 12px;
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.verify-btn:hover {
+  background-color: #1991db;
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 12px;
+  background-color: #e1e8ed;
+  color: #14171a;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #d3dce6;
+}
+
+.modal .error {
+  color: #f44336;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.verification-info {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #e1e8ed;
+}
+
+.verification-info p {
+  font-size: 12px;
+  color: #657786;
+  margin: 0;
+}

@@ -64,3 +64,8 @@
       display: none;
     }
   }
+
+  .language-selector-container {
+    margin: 15px 0;
+    padding: 0 10px;
+  }

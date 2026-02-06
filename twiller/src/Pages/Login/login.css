@@ -181,3 +181,135 @@ input {
 
     }
 }
+
+/* New styles for device info and OTP */
+.device-info-banner {
+    background-color: #e8f5fe;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.device-info-banner small {
+    color: #1da1f2;
+    font-size: 12px;
+}
+
+.error-message {
+    background-color: #ffebee;
+    border: 1px solid #f44336;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.forgot-password-link {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.forgot-password-link a {
+    color: #1da1f2;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password-link a:hover {
+    text-decoration: underline;
+}
+
+/* OTP Modal Styles */
+.otp-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.otp-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.otp-modal h3 {
+    margin-bottom: 10px;
+    color: #14171a;
+}
+
+.otp-modal p {
+    color: #657786;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.otp-modal input {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    letter-spacing: 4px;
+}
+
+.otp-modal input:focus {
+    border-color: #1da1f2;
+    outline: none;
+}
+
+.otp-modal .error {
+    color: #f44336;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.otp-modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.otp-modal-buttons .verify-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.otp-modal-buttons .verify-btn:hover {
+    background-color: #1991db;
+}
+
+.otp-modal-buttons .cancel-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: #e1e8ed;
+    color: #14171a;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.otp-modal-buttons .cancel-btn:hover {
+    background-color: #d3dce6;
+}

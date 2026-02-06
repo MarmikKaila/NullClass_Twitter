@@ -7,15 +7,21 @@ import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import AddLinkIcon from "@mui/icons-material/AddLink";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import Editprofile from "../Editprofile/Editprofile";
 import axios from "axios";
 import useLoggedinuser from "../../../hooks/useLoggedinuser";
+
+const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const Mainprofile = ({ user }) => {
   const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
   const [loggedinuser] = useLoggedinuser();
   const username = user?.email?.split("@")[0];
   const [post, setpost] = useState([]);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:5000/userpost?email=${user?.email}`)
@@ -23,7 +29,40 @@ const Mainprofile = ({ user }) => {
       .then((data) => {
         setpost(data);
       });
+    
+    // Fetch notification settings
+    fetch(`${API}/notification-settings/${user?.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setNotificationsEnabled(data.notificationsEnabled ?? true);
+      })
+      .catch(() => {});
   }, [user.email]);
+
+  const toggleNotifications = async () => {
+    const newValue = !notificationsEnabled;
+    setNotificationsEnabled(newValue);
+    
+    try {
+      await fetch(`${API}/notification-settings/${user?.email}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notificationsEnabled: newValue }),
+      });
+
+      // Update localStorage for immediate effect
+      localStorage.setItem("notificationsEnabled", JSON.stringify(newValue));
+      
+      // Request browser notification permission if enabling
+      if (newValue && "Notification" in window) {
+        Notification.requestPermission();
+      }
+    } catch (err) {
+      console.error("Failed to update notification settings:", err);
+      // Revert on error
+      setNotificationsEnabled(!newValue);
+    }
+  };
 
   const handleuploadcoverimage = (e) => {
     setisloading(true);
@@ -224,6 +263,35 @@ const Mainprofile = ({ user }) => {
                     )}
                   </div>
                 </div>
+                
+                {/* Notification Settings */}
+                <div className="notification-settings">
+                  <h4>Notification Settings</h4>
+                  <div className="notification-toggle">
+                    <span>
+                      {notificationsEnabled ? (
+                        <NotificationsIcon style={{ color: "#1da1f2" }} />
+                      ) : (
+                        <NotificationsOffIcon style={{ color: "#657786" }} />
+                      )}
+                      Tweet Notifications (cricket & science keywords)
+                    </span>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={notificationsEnabled}
+                        onChange={toggleNotifications}
+                      />
+                      <span className="slider round"></span>
+                    </label>
+                  </div>
+                  <p className="notification-info">
+                    {notificationsEnabled 
+                      ? "You will receive notifications for tweets containing 'cricket' or 'science'"
+                      : "Notifications are disabled"}
+                  </p>
+                </div>
+
                 <h4 className="tweetsText">Tweets</h4>
                 <hr />
               </div>
