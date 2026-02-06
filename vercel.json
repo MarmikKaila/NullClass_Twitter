@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd twiller && npm install && npm run build",
+  "outputDirectory": "twiller/build",
+  "installCommand": "cd twiller && npm install"
+}
