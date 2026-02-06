@@ -13,12 +13,11 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "express": "^4.19.2",
-    "mongodb": "^6.8.0",
-    "nodemon": "^3.1.4"
+    "mongodb": "^6.8.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^3.1.11"
   }
 }

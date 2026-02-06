@@ -1,129 +1,94 @@
+// src/Pages/Feed/Tweetbox/Tweetbox.js
 import React, { useState } from "react";
-import "./Tweetbox.css";
-import { Avatar, Button } from "@mui/material";
-import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
-import axios from "axios";
-import { useUserAuth } from "../../../context/UserAuthContext";
-import useLoggedinuser from "../../../hooks/useLoggedinuser";
-const Tweetbox = () => {
-  const [post, setpost] = useState("");
-  const [imageurl, setimageurl] = useState("");
-  const [isloading, setisloading] = useState(false);
-  const [name, setname] = useState("");
-  const [username, setusername] = useState("");
-  const { user } = useUserAuth();
-  const [loggedinsuer] = useLoggedinuser();
-  const email = user?.email;
-  const userprofilepic = loggedinsuer[0]?.profileImage
-    ? loggedinsuer[0].profileImage
-    : user && user.photoURL;
+import "./Tweetbox.css"; // keep your styles (if not exist, create minimal)
+const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-  const handleuploadimage = (e) => {
-    setisloading(true);
-    const image = e.target.files[0];
-    // console.log(image)
-    const formData = new FormData();
-    formData.set("image", image);
-    axios
-      .post(
-        "https://api.imgbb.com/1/upload?key=b0ea2f6cc0f276633b2a8a86d2c43335",
-        formData
-      )
-      .then((res) => {
-        setimageurl(res.data.data.display_url);
-        // console.log(res.data.data.display_url);
-        setisloading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-  const handletweet = (e) => {
+export default function Tweetbox(props) {
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // get user email (if stored on login); fall back to default
+  function getUserEmail() {
+    try {
+      const raw = localStorage.getItem("user");
+      if (!raw) return "me@example.com";
+      const u = JSON.parse(raw);
+      return u?.email || "me@example.com";
+    } catch {
+      return "me@example.com";
+    }
+  }
+
+  const handleTweet = async (e) => {
     e.preventDefault();
-    if (user?.providerData[0]?.providerId === "password") {
-      fetch(`http://localhost:5000/loggedinuser?email=${email}`)
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data[0].name);
-          setname(data[0]?.name);
-          setusername(data[0]?.username);
-        });
-    } else {
-      setname(user?.displayName);
-      setusername(email?.split("@")[0]);
-    }
-    // console.log(name);
-    if (name) {
-      const userpost = {
-        profilephoto: userprofilepic,
-        post: post,
-        photo: imageurl,
-        username: username,
-        name: name,
-        email: email,
-      };
-      // console.log(userpost);
-      setpost("");
-      setimageurl("");
-      fetch("http://localhost:5000/post", {
+    if (!text || !text.trim()) return;
+    setLoading(true);
+
+    const payload = {
+      post: text.trim(), // backend expects `post` (based on your feed)
+      email: getUserEmail(),
+      profilephoto: "" // optional: add profile photo url if you have it
+    };
+
+    try {
+      const res = await fetch(`${API}/post`, {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(userpost),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        console.error("Post failed", res.statusText);
+        setLoading(false);
+        return;
+      }
+      // success: clear input
+      setText("");
+      // ask parent to refresh immediately
+      if (typeof props.onPostCreated === "function") {
+        try { await props.onPostCreated(); } catch (err) { console.warn("onPostCreated callback failed", err); }
+      }
+      // optionally show a small in-app toast
+      if (typeof window !== "undefined" && typeof window.showInAppToast === "function") {
+        window.showInAppToast("Posted", payload.post);
+      }
+    } catch (err) {
+      console.error("Tweet error:", err);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
-    <div className="tweetBox">
-      <form onSubmit={handletweet}>
-        <div className="tweetBox__input">
-          <Avatar
-            src={
-              loggedinsuer[0]?.profileImage
-                ? loggedinsuer[0].profileImage
-                : user && user.photoURL
-            }
-          />
-          <input
-            type="text"
+    <div className="tweetbox" style={{ padding: 12, borderBottom: "1px solid #e6ecf0" }}>
+      <form onSubmit={handleTweet} style={{ display: "flex", gap: 12 }}>
+        <img src="/logo192.png" alt="avatar" style={{ width: 48, height: 48, borderRadius: 24 }} />
+        <div style={{ flex: 1 }}>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             placeholder="What's happening?"
-            onChange={(e) => setpost(e.target.value)}
-            value={post}
-            required
+            rows={3}
+            style={{ width: "100%", padding: 8, fontSize: 15, borderRadius: 8, resize: "vertical" }}
           />
-        </div>
-        <div className="imageIcon_tweetButton">
-          <label htmlFor="image" className="imageIcon">
-            {isloading ? (
-              <p>Uploading Image</p>
-            ) : (
-              <p>
-                {imageurl ? (
-                  "Image Uploaded"
-                ) : (
-                  <AddPhotoAlternateOutlinedIcon />
-                )}
-              </p>
-            )}
-          </label>
-          <input
-            type="file"
-            id="image"
-            className="imageInput"
-            onChange={handleuploadimage}
-          />
-          <Button className="tweetBox__tweetButton" type="submit">
-            Tweets
-          </Button>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+            <div />
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                background: "#50b7f5",
+                color: "#fff",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: 20,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {loading ? "Posting..." : "Tweets"}
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
-};
-
-export default Tweetbox;
+}
