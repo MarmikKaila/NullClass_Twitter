@@ -24,7 +24,7 @@ const Mainprofile = ({ user }) => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/userpost?email=${user?.email}`)
+    fetch(`${API}/userpost?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setpost(data);
@@ -84,7 +84,7 @@ const Mainprofile = ({ user }) => {
         };
         setisloading(false);
         if (url) {
-          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+          fetch(`${API}/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",
@@ -123,7 +123,7 @@ const Mainprofile = ({ user }) => {
         };
         setisloading(false);
         if (url) {
-          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+          fetch(`${API}/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",

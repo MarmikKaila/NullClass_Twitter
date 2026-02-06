@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./Editprofile.css";
 
+const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -79,7 +81,7 @@ const Editprofile = ({ user, loggedinuser }) => {
       website,
       dob,
     };
-    fetch(`http://localhost:5000/userupdate/${user?.email}`, {
+    fetch(`${API}/userupdate/${user?.email}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
