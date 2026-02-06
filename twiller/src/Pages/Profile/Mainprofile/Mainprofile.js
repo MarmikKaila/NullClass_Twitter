@@ -13,8 +13,6 @@ import Editprofile from "../Editprofile/Editprofile";
 import axios from "axios";
 import useLoggedinuser from "../../../hooks/useLoggedinuser";
 
-const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
-
 const Mainprofile = ({ user }) => {
   const navigate = useNavigate();
   const [isloading, setisloading] = useState(false);
@@ -24,14 +22,14 @@ const Mainprofile = ({ user }) => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
-    fetch(`${API}/userpost?email=${user?.email}`)
+    fetch(`http://localhost:5000/userpost?email=${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setpost(data);
       });
     
     // Fetch notification settings
-    fetch(`${API}/notification-settings/${user?.email}`)
+    fetch(`http://localhost:5000/notification-settings/${user?.email}`)
       .then((res) => res.json())
       .then((data) => {
         setNotificationsEnabled(data.notificationsEnabled ?? true);
@@ -44,7 +42,7 @@ const Mainprofile = ({ user }) => {
     setNotificationsEnabled(newValue);
     
     try {
-      await fetch(`${API}/notification-settings/${user?.email}`, {
+      await fetch(`http://localhost:5000/notification-settings/${user?.email}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ notificationsEnabled: newValue }),
@@ -84,7 +82,7 @@ const Mainprofile = ({ user }) => {
         };
         setisloading(false);
         if (url) {
-          fetch(`${API}/userupdate/${user?.email}`, {
+          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",
@@ -123,7 +121,7 @@ const Mainprofile = ({ user }) => {
         };
         setisloading(false);
         if (url) {
-          fetch(`${API}/userupdate/${user?.email}`, {
+          fetch(`http://localhost:5000/userupdate/${user?.email}`, {
             method: "PATCH",
             headers: {
               "content-type": "application/json",
